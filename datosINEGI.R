@@ -11,7 +11,7 @@ inegiData=function(token,indicator){
 
   for (b in 1:length(indicator)){
     cat("\f")
-    print("Fecthing data ofrom INEGI DB's for indicator ",b," of ",length(indicator),": ",indicator[b])
+    print(paste0("Fecthing data from INEGI DB's for indicator ",b," of ",length(indicator),": ",indicator[b]))
     
     url=paste0("https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/",
                indicator[b],
@@ -49,7 +49,8 @@ inegiData=function(token,indicator){
     
   }
   
-  
+cat("\f")
+print("Data retrieval from INEGI done...")
   return(dataObject)
-  print("Data retrieval from INEGI done...")
+
 }
