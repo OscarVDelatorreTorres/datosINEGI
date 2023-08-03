@@ -4,28 +4,50 @@ library(httr)
 library(jsonlite)
 library(rjson)
 
-tokenINEGI="5d0750aa-9434-f980-90bb-9559cb8dc581"
-indicador=6207061409
-#Llamado al API
-url=paste0("https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/",
-       indicador,
-       "/es/0700/false/BISE/2.0/",
-       tokenINEGI,
-       "?type=json")
-respuesta<-GET(url)
-datosGenerales<-content(respuesta,"text")
-Datos<-paste(datosGenerales,collapse = " ")
+#token="5d0750aa-9434-f980-90bb-9559cb8dc581"
+#indicator=c(6207061409,539260)
 
-#Obtención de la lista de observaciones 
-Datos<-fromJSON(Datos)
-Datos<-Datos $Series
-Datos<-Datos[[1]] $OBSERVATIONS
+inegiData=function(token,indicator){
 
-datosOut=data.frame(date=matrix("",length(Datos),1),
-                    value=matrix("",length(Datos),1))
-for (a in 1:length(Datos)){
-  datosOut$date[a]=Datos[[a]]$TIME_PERIOD
-  datosOut$value[a]=Datos[[a]]$OBS_VALUE
-}  
+  for (b in 1:length(indicator)){
+    
+    url=paste0("https://www.inegi.org.mx/app/api/indicadores/desarrolladores/jsonxml/INDICATOR/",
+               indicator[b],
+               "/es/0700/false/BISE/2.0/",
+               token,
+               "?type=json")
+      
+    call<-GET(url)
+    generalData<-content(call,"text")
+    dataInegi<-paste(generalData,collapse = " ")
+    
+    dataInegi<-fromJSON(dataInegi)
+    dataInegi<-dataInegi $Series
+    dataInegi<-dataInegi[[1]] $OBSERVATIONS
+    
+    dataTable=data.frame(date=matrix("",length(dataInegi),1),
+                         value=matrix(0,length(dataInegi),1))
+    
+    for (a in 1:length(dataInegi)){
 
-return(datosOut)
+      dataTable$date[a]=dataInegi[[a]]$TIME_PERIOD
+      if (length(dataInegi[[a]]$OBS_VALUE)<1){
+        dataTable$value[a]=NA        
+      } else {
+        dataTable$value[a]=dataInegi[[a]]$OBS_VALUE        
+      }
+
+    }  
+    
+    if (b<2){
+     eval(parse(text=paste0("dataObject=list('",indicator[b],"'=dataTable)")))
+    } else {
+      eval(parse(text=paste0("dataObject$'",indicator[b],"'=dataTable"))) 
+    }
+    
+  }
+  
+  
+  return(dataObject)
+  
+}
