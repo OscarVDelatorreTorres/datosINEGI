@@ -19,7 +19,7 @@ if (!require(rjson)){install.packages("rjson")} else {library(rjson)}
 
 # Código fuente de la función:
 
-inegiData=function(token,indicator,bancoDatos,serieTiempo){
+datosINEGI=function(token,indicator,bancoDatos,serieTiempo){
 
   for (b in 1:length(indicator)){
     cat("\f")
