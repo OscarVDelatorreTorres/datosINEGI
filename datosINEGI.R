@@ -95,7 +95,7 @@ inegiData=function(token,indicator,bancoDatos,serieTiempo){
   }
   
 cat("\f")
-print("Descarga de datos de INEGI realizada con éxito!!!")
+print("Descarga de datos de INEGI realizada con éxito!!!") 
   return(dataObject)
 
 }
