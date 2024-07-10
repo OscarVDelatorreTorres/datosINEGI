@@ -26,7 +26,7 @@ id=c(741274,539260) estos son los códigos del ITAE michoacano y de la UMA
 bancoDatos=c("BIE","BISE")
 serieTiempo=c(TRUE,FALSE)
 # Se ejecuta la función con los objetos de token, vector de Id de datos, los banco de datos y si deseamos, en cada uno, extraer la srie de tiempo o la observación más reciente:
-datos=inegiData(token,id,bancoDatos,serieTiempo)
+datos=datosINEGI(token,id,bancoDatos,serieTiempo)
 ```
 
 **NOTA:** Es importante que los objetos `id`, `bancoDatos`, `serieTiempo` tengan la misma longitud. Es decir, sean vectores con la misma cantidad de elementos o filas.
